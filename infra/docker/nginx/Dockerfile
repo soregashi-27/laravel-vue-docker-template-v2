@@ -13,6 +13,8 @@ COPY --from=node /usr/local/bin /usr/local/bin
 # npm command
 COPY --from=node /usr/local/lib /usr/local/lib
 # yarn command
-COPY ./infra/dockernginx/*.conf /etc/nginx/conf.d/
+COPY --from=node /opt /opt
+# nginx config file
+COPY ./infra/docker/nginx/*.conf /etc/nginx/conf.d/
 
 WORKDIR /work/backend
