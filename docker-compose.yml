@@ -1,0 +1,25 @@
+version: '3.9'
+volumes:
+  php-fpm-soket:
+  db-store:
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./infra/docker/php/dockerfile
+    volumes:
+      - type: volume
+        source: php-fpm-socket
+        target: /var/run/php-fpm
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./backend
+        target: /work/backend
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_NAME:-laravel_local}
+      - DB_USERNAME=${DB_USER:-soregashi27}
+      - DB_PASSWORD=${DB_PASS:-soregashidegozaru}
