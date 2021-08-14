@@ -23,3 +23,5 @@ services:
       - DB_DATABASE=${DB_NAME:-laravel_local}
       - DB_USERNAME=${DB_USER:-soregashi27}
       - DB_PASSWORD=${DB_PASS:-soregashidegozaru}
+
+  web:
