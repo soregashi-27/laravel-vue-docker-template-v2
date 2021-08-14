@@ -38,3 +38,23 @@ services:
         source: ./backend
         target: /work/backend
   
+  db:
+    build:
+      context: .
+      dockerfile: ./infra/docker/mysql/Dockerfile
+    ports:
+      - target: 3306
+        published: ${DB_PORT:-3306}
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: volume
+        source: db-store
+        target: /var/lib/mysql
+        volume:
+          nocopy: true
+    environment:
+      - MYSQL_DATABASE=${DB_NAME:-laravel_local}
+      - MYSQL_USER=${DB_USER:-soregashi27}
+      - MYSQL_PASSWORD=${DB_PASS:-soregashidegozaru}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS:-soregashidegozaru}
