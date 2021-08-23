@@ -3,4 +3,4 @@ LABEL maintainer="soregashi27"
 
 ENV TZ=UTC
 
-COPY /infra/docker/myslq/my.cnf /etc/my.cnf
+COPY /infra/docker/mysql/my.cnf /etc/my.cnf

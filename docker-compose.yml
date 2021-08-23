@@ -1,12 +1,13 @@
-version: '3.9'
+version: "3.9"
 volumes:
-  php-fpm-soket:
+  php-fpm-socket:
   db-store:
+  psysh-store:
 services:
   app:
     build:
       context: .
-      dockerfile: ./infra/docker/php/dockerfile
+      dockerfile: ./infra/docker/php/Dockerfile
     volumes:
       - type: volume
         source: php-fpm-socket
@@ -16,35 +17,42 @@ services:
       - type: bind
         source: ./backend
         target: /work/backend
-    environment:
-      - DB_CONNECTION=mysql
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=${DB_NAME:-laravel_local}
-      - DB_USERNAME=${DB_USER:-soregashi27}
-      - DB_PASSWORD=${DB_PASS:-soregashidegozaru}
+      - type: volume
+        source: psysh-store
+        target: /root/.config/psysh
+        volume:
+          nocopy: true
+    # environment:
+    #   - DB_CONNECTION=mysql
+    #   - DB_HOST=db
+    #   - DB_PORT=3306
+    #   - DB_DATABASE=${DB_NAME:-laravel_local}
+    #   - DB_USERNAME=${DB_USER:-soregashi27}
+    #   - DB_PASSWORD=${DB_PASS:-soregashidegozaru}
 
   web:
     build:
       context: .
-        dockerfile: ./infra/docker/nginx/Dockerfile
+      dockerfile: ./infra/docker/nginx/Dockerfile
     ports:
       - target: 80
-        published: ${WEB_PORT:-80}
+        # published: ${WEB_PORT:-80}
+        published: 8080
         protocol: tcp
         mode: host
     volumes:
       - type: bind
         source: ./backend
         target: /work/backend
-  
+
   db:
     build:
       context: .
       dockerfile: ./infra/docker/mysql/Dockerfile
     ports:
       - target: 3306
-        published: ${DB_PORT:-3306}
+        # published: ${DB_PORT:-3306}
+        published: 3306
         protocol: tcp
         mode: host
     volumes:
@@ -53,8 +61,8 @@ services:
         target: /var/lib/mysql
         volume:
           nocopy: true
-    environment:
-      - MYSQL_DATABASE=${DB_NAME:-laravel_local}
-      - MYSQL_USER=${DB_USER:-soregashi27}
-      - MYSQL_PASSWORD=${DB_PASS:-soregashidegozaru}
-      - MYSQL_ROOT_PASSWORD=${DB_PASS:-soregashidegozaru}
+    # environment:
+    #   - MYSQL_DATABASE=${DB_NAME:-laravel_local}
+    #   - MYSQL_USER=${DB_USER:-soregashi27}
+    #   - MYSQL_PASSWORD=${DB_PASS:-soregashidegozaru}
+    #   - MYSQL_ROOT_PASSWORD=${DB_PASS:-soregashidegozaru}
