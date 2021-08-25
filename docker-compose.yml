@@ -16,6 +16,11 @@ services:
     volumes:
       - pma-session-store:/sessions
 
+  # cs:
+  #   image: herloct/php-cs-fixer
+  #   volumes:
+  #     - ./backend:/project
+
   app:
     build:
       context: .
