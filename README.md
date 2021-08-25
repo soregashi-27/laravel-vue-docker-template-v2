@@ -137,8 +137,9 @@ node -V
 ### Web Browser上で画面を確認する
 ・Laravel
 ```
-http://127.0.0.1/
+http://127.0.0.1:80/
 ```
+80番は省略される
 
 ・PhpMyAdmin
 ```
